@@ -14,6 +14,7 @@ def stat_model_quality(X, y, details, model, model_name):
         'Scheme': [d[0] for d in details],
         'Design': [d[1] for d in details],
         'Real Area': y,
+        'Initial Area': [x[1] for x in X],
         'Predicted Area': predictions
     })
     results_df.to_csv(model_name + '_design_predictions.csv', index=False)

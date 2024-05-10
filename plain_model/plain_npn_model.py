@@ -25,5 +25,8 @@ if __name__ == "__main__":
     stat_model_quality(batch['X_test'], batch['y_test'], batch['details_test'], simple_model, "simple_model")
     stat_model_quality(X_test, batch['y_test'], batch['details_test'], model, "npn_model")
 
+    stat_model_quality(batch['X_test'], batch['y_test'], batch['details_test'], simple_model, "simple_model")
+    stat_model_quality(X_test, batch['y_test'], batch['details_test'], model, "npn_model")
+
 
 
