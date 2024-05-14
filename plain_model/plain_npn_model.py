@@ -4,6 +4,9 @@ from prepare_extend_data import extend_data
 from utility.constants import PLAIN_MODEL_NAME, PLAIN_NPN_MODEL_NAME
 from utility.data_loader import load_batch, save_model
 
+# Mean Squared Error: 33392465.917393334
+# Mean Squared Error: 227382600.16519403
+
 # Errors are bc names and scripts "plain_model" are the same
 if __name__ == "__main__":
     batch = load_batch(PLAIN_MODEL_NAME)

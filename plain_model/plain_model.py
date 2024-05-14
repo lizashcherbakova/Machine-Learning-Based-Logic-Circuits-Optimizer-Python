@@ -1,8 +1,8 @@
 from sklearn.ensemble import RandomForestRegressor
 
-from prepare_data import prepare_data, split_data_by_design
+from plain_model.prepare_data import split_data_by_scheme_dict_and_design
 from utility.constants import PLAIN_MODEL_NAME
-from utility.data_loader import save_model, save_batch, load_data
+from utility.data_loader import save_model, save_batch, load_data, save_data
 
 from xgboost import XGBRegressor
 
@@ -34,11 +34,13 @@ def build_and_train_model2(X_train, X_test, y_train, y_test):
 
     return model
 
+
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import train_test_split
+
 
 def build_and_train_model3(X_train, X_test, y_train, y_test, degree=2):
     # Create a pipeline that first transforms data with polynomial features, then fits a linear regression model
@@ -54,6 +56,7 @@ def build_and_train_model3(X_train, X_test, y_train, y_test, degree=2):
 
     return model
 
+
 if __name__ == "__main__":
     # directory_path_last = '/Users/dreamer1977/ed/work/ispras/vkr/statistics_for_model/openabcd_step20_pt'
     # schemes, designs = extract_names(directory_path_last)
@@ -64,8 +67,15 @@ if __name__ == "__main__":
     designs = load_data("designs")
     print(schemes, designs)
 
-    data_by_design = prepare_data(schemes, designs)
-    X_train, X_test, y_train, y_test, details_train, details_test = split_data_by_design(data_by_design, test_size=0.2)
+    # scheme_info = load_schemes_dict(designs, schemes)
+    # save_data(scheme_info, "scheme_info")
+    # exit(0)
+    scheme_info = load_data("scheme_info")
+    # X_train, X_test, y_train, y_test, details_train, details_test = split_data_by_scheme_and_design(designs, schemes, scheme_info)
+    X_train, X_test, y_train, y_test, details_train, details_test = split_data_by_scheme_dict_and_design(designs,
+                                                                                                         schemes,
+                                                                                                         scheme_info,
+                                                                                                         test_size=0.2)
     # 1012500 810000 202500
     print(X_train.shape, X_test.shape)
     save_batch(PLAIN_MODEL_NAME, X_train, X_test, y_train, y_test, details_train, details_test)
@@ -77,6 +87,7 @@ if __name__ == "__main__":
     # Mean Squared Error: 101277.80265502473
     # Mean Squared Error: 652923.5662191233
     # Mean Squared Error: 652923.5662191233
+    # Mean Squared Error: 33392465.917393334
 
     model = build_and_train_model(X_train, X_test, y_train, y_test)
     save_model(PLAIN_MODEL_NAME, model)
