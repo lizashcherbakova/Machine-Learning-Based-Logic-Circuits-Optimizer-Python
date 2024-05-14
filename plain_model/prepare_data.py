@@ -2,6 +2,7 @@ from typing import Tuple, List, Dict, Any
 import numpy as np
 from sklearn.model_selection import train_test_split
 
+from model_prepare.retrive_npn_parameters import get_npn_counter_parameters
 from model_prepare.retrive_parameters import get_simple_parameters, get_steps_scheme_optimization, \
     get_simple_area_after_optimization
 
@@ -99,6 +100,27 @@ def split_data_by_scheme_and_design_ready(train_designs, train_schemes: List[str
 
                 features.append(input_features)
 
+                targets.append(get_simple_area_after_optimization(scheme, design))
+                details.append((scheme, design))
+
+        return np.array(features), np.array(targets), details
+
+    X_train, y_train, details_train = collect_data(train_designs, train_schemes)
+    X_test, y_test, details_test = collect_data(test_designs, test_schemes)
+
+    return X_train, X_test, y_train, y_test, details_train, details_test
+
+
+def split_data_by_scheme_and_design_ready_npn(train_designs, train_schemes: List[str], test_designs,
+                                          test_schemes: List[str], schemes_dict: Dict[str, Dict[str, Any]]):
+    def collect_data(selected_designs, selected_schemes):
+        features = []
+        targets = []
+        details = []
+        for design in selected_designs:
+            for scheme in selected_schemes:
+                input_features = schemes_dict[scheme][design] + get_npn_counter_parameters(scheme)
+                features.append(input_features)
                 targets.append(get_simple_area_after_optimization(scheme, design))
                 details.append((scheme, design))
 
